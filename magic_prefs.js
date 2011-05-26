@@ -21,7 +21,21 @@ var MagicPrefs = function( db_name, callback ){
         return null;
     }
     
-    this.db = openDatabase( db_name );
+	//Apparently, just calling with db_name worked at some point
+	//So I keep it for posterity
+	//Chrome would yell and throw an exception..
+	try 
+	{
+		this.db = openDatabase( db_name );
+	} 
+	catch (e) 
+	{
+		this.db = openDatabase( db_name , "1.0", "Magic Framework", 200000);
+	}
+	
+	//Safari however, will create something useless silently..	
+	if( !this.db )
+		this.db = openDatabase( db_name , "1.0", "Magic Framework", 200000);
     
 	var self = this;
     this.db.transaction(         
